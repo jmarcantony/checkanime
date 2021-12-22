@@ -1,3 +1,3 @@
-module github.com/jmarcantony/CheckBoruto
+module github.com/jmarcantony/cb
 
 go 1.17
