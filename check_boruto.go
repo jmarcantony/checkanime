@@ -1,3 +1,67 @@
 package main
 
-func main() {}
+import (
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
+	"net/http"
+	"os"
+	"regexp"
+	"strconv"
+	"strings"
+)
+
+
+const (
+    path = "/mnt/c/Users/HP/Desktop/Folders/BorutoEpisode.txt"
+    url = "https://ww4.narutowatchonline.com/tvshows/boruto-subbed-english-online-free/"
+)
+
+var (
+    headers map[string]string
+)
+
+func main() {
+    watched := getWatched()
+    fmt.Printf("Episodes watched    : %d\n", watched)
+    // Read json for headers
+    f, _ := os.Open("headers.json")
+    b, _ := ioutil.ReadAll(f)
+    json.Unmarshal(b, &headers)
+
+    // HTTP Request for html
+    client := &http.Client{}
+    req, _ := http.NewRequest("GET", url, nil)
+    res, _ := client.Do(req)
+    body, _ := ioutil.ReadAll(res.Body)
+
+    episodes := getEpisodes(string(body))
+    fmt.Printf("Episodes avaialable : %d\n", episodes)
+}
+
+func getWatched() int {
+    f, _ := os.ReadFile(path)
+    i, _ := strconv.Atoi(strings.Split(string(f), " ")[1])
+    return i
+}
+
+func getEpisodes(b string) int {
+    r, _ := regexp.Compile(`mark-\d+`)
+    marks := r.FindAllString(b, -1)
+    return len(marks) + getMissing(marks)
+}
+
+func getMissing(marks []string) int {
+    var (
+        t int
+        prev int
+    )
+    for _, v := range marks {
+        i, _ := strconv.Atoi(strings.Split(v, "-")[1])
+        if prev+1 != i {
+            t++
+        }
+        prev = i
+    }
+    return t
+}
