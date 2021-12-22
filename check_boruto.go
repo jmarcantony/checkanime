@@ -28,6 +28,15 @@ func main() {
 
     episodes := getEpisodes(string(body))
     fmt.Printf("Episodes avaialable : %d\n", episodes)
+    d := episodes - watched
+    switch {
+    case d == 0:
+        fmt.Println("No new episodes are added")
+    case d > 0:
+        fmt.Printf("%d new epsiodes are available\n", d)
+    default:
+        fmt.Printf("Thats weird, %d episodes were removed\n", d)
+    }
 }
 
 func getWatched() int {
