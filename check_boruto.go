@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -17,17 +16,9 @@ const (
     url = "https://ww4.narutowatchonline.com/tvshows/boruto-subbed-english-online-free/"
 )
 
-var (
-    headers map[string]string
-)
-
 func main() {
     watched := getWatched()
     fmt.Printf("Episodes watched    : %d\n", watched)
-    // Read json for headers
-    f, _ := os.Open("headers.json")
-    b, _ := ioutil.ReadAll(f)
-    json.Unmarshal(b, &headers)
 
     // HTTP Request for html
     client := &http.Client{}
