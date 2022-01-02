@@ -32,6 +32,15 @@ var (
 			AddToEpisode:    -1,
 			AddToWatched:    26,
 		},
+                {
+                    Name: "Jujutsu Kaisen",
+                    WatchedPath: "/mnt/c/Users/HP/Desktop/Folders/JujutsuKaisenEpisodes.txt",
+                    Url: "https://watchjujutsukaisen4freeonline.blogspot.com/p/english-subbed_30.html",
+                    Markers: []string{`Jujutsu Kaisen - Episode \d+`},
+                    Client: client,
+                    EpisodeSplitter: " ",
+                    EpisodeIndex: 1,
+                },
 	}
 	wg sync.WaitGroup
 )
