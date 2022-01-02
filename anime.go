@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/fatih/color"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -9,7 +10,6 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
-        "github.com/fatih/color"
 )
 
 type Anime struct {
@@ -69,20 +69,20 @@ func (a *Anime) ShowReport() {
 	if a.Irregular {
 		a.GetMissing()
 	}
-        cyan := color.New(color.FgCyan).SprintFunc()
+	cyan := color.New(color.FgCyan).SprintFunc()
 	fmt.Printf("\n\tReport for %s:\n\n", cyan(a.Name))
 	fmt.Printf("\tEpisodes watched    : %d\n", a.Watched)
 	fmt.Printf("\tEpisodes avaialable : %d\n\n", a.Episodes+a.Missing)
 	d := (a.Episodes + a.Missing) - a.Watched
 	switch {
 	case d == 0:
-            color.Yellow("\tNo new episodes are added")
+		color.Yellow("\tNo new episodes are added")
 	case d > 0:
-            color.Green("\t%d new epsiodes are available\n", d)
+		color.Green("\t%d new epsiodes are available\n", d)
 	default:
-            color.Red("\tThats weird, %d episodes were removed\n", d*-1)
+		color.Red("\tThats weird, %d episodes were removed\n", d*-1)
 	}
-        fmt.Printf("\n%s\n", strings.Repeat("=", 50))
+	fmt.Printf("\n%s\n", strings.Repeat("=", 50))
 }
 
 func removeDupes(s []string) []string {
