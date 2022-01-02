@@ -1,24 +1,48 @@
 package main
 
-import "net/http"
+import (
+	"net/http"
+	"sync"
+)
 
 var (
-    client = &http.Client{}
-    boruto = &Anime{
-        Name: "Boruto",
-        WatchedPath: "/mnt/c/Users/HP/Desktop/Folders/BorutoEpisode.txt",
-        Url: "https://ww4.narutowatchonline.com/tvshows/boruto-subbed-english-online-free/",
-        FindUrl: "https://ww4.narutowatchonline.com/episodes/boruto-episode-%d-subbed-english-free-online/",
-        Splitter: "-",
-        Marker: `mark-\d+`,
-        Client: client,
-        EpisodeIndex: 1,
-    }
-    animeCollection = []*Anime{boruto}
+	client          = &http.Client{}
+	animeCollection = []*Anime{
+		{
+			Name:            "Boruto",
+			WatchedPath:     "/mnt/c/Users/HP/Desktop/Folders/BorutoEpisode.txt",
+			Url:             "https://ww4.narutowatchonline.com/tvshows/boruto-subbed-english-online-free/",
+			FindUrl:         "https://ww4.narutowatchonline.com/episodes/boruto-episode-%d-subbed-english-free-online/",
+			Splitter:        "-",
+			Markers:         []string{`mark-\d+`},
+			Client:          client,
+			EpisodeSplitter: " ",
+			EpisodeIndex:    1,
+			Irregular:       true,
+		},
+		{
+			Name:            "Demon Slayer",
+			WatchedPath:     "/mnt/c/Users/HP/Desktop/Folders/demonslayerepisodes.txt",
+			Url:             "https://ww2.demonslayerepisodes.com/demon-slayer-english-subbed/",
+			Markers:         []string{`Demon Slayer Episode \d+ English Subbed`, `Demon Slayer Season \d+ Episode \d+ English Subbed`},
+			Splitter:        " ",
+			Client:          client,
+			EpisodeSplitter: "\n",
+			EpisodeIndex:    0,
+			AddToEpisode:    -1,
+			AddToWatched:    26,
+		},
+	}
+	wg sync.WaitGroup
 )
 
 func main() {
-    for _, anime := range animeCollection  {
-        anime.ShowReport()
-    }
+	for _, anime := range animeCollection {
+		wg.Add(1)
+		go func(a *Anime) {
+			a.ShowReport()
+			wg.Done()
+		}(anime)
+	}
+	wg.Wait()
 }
