@@ -1,4 +1,4 @@
-module github.com/jmarcantony/ca
+module github.com/jmarcantony/checkanime
 
 go 1.17
 

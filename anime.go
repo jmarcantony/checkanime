@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"github.com/fatih/color"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -10,12 +9,13 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+
+	"github.com/fatih/color"
 )
 
 type Anime struct {
-	Name, Url, WatchedPath, Splitter, FindUrl, EpisodeSplitter           string
+	Name, Url, WatchedPath, Splitter, EpisodeSplitter                    string
 	Episodes, Watched, Missing, EpisodeIndex, AddToWatched, AddToEpisode int
-	Client                                                               *http.Client
 	Markers, marks                                                       []string
 	Irregular                                                            bool
 }
@@ -33,9 +33,9 @@ func (a *Anime) GetWatched() {
 	a.Watched = n + a.AddToWatched
 }
 
-func (a *Anime) GetEpisodes() {
+func (a *Anime) GetEpisodes(client *http.Client) {
 	req, _ := http.NewRequest("GET", a.Url, nil)
-	res, _ := a.Client.Do(req)
+	res, _ := client.Do(req)
 	body, _ := ioutil.ReadAll(res.Body)
 	for _, marker := range a.Markers {
 		r, _ := regexp.Compile(marker)
@@ -63,9 +63,9 @@ func (a *Anime) GetMissing() {
 	a.Missing = t
 }
 
-func (a *Anime) ShowReport() {
+func (a *Anime) ShowReport(client *http.Client) {
 	a.GetWatched()
-	a.GetEpisodes()
+	a.GetEpisodes(client)
 	if a.Irregular {
 		a.GetMissing()
 	}
