@@ -40,9 +40,9 @@ here's an example:
     	"episodeSplitter": " ",
     	"episodeIndex": 1,
     	"addToEpisode": -1,
-    	"addToWatched": 26
-		"irregular": true
-	}
+    	"addToWatched": 26,
+	"irregular": true
+    }
 ]
 ```
 in my case `/path/to/watchedepisodes.txt` looks like
