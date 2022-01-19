@@ -2,6 +2,7 @@
 Check if new episodes of you're favourite anime has been released from you're terminal
 
 # Installation
+#### Make sure `$GOPATH/bin` is added to PATH
 	go install github.com/jmarcantony/checkanime@latest
 
 # Configuiration
@@ -48,5 +49,8 @@ in my case `/path/to/watchedepisodes.txt` looks like
 ```
 Episode: 7
 ```
+
+you can set the file path to the json file by an environment variable with key `ANIME_JSON` or pass the path as an argument with `-p` flag
+
 # Screenshot
-![screenshot](https://raw.githubusercontent.com/jmarcantony/checkanime/main/images/screenshot.png)
+![screenshot](https://raw.githubusercontent.com/jmarcantony/checkanime/master/images/screenshot.png)
